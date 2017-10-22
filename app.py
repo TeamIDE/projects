@@ -5,25 +5,22 @@
 		  setup trace route, debugging, logging, centralized documentation (can we publish to a wiki or something?)
 """
 from flask import Flask, redirect, url_for, request, render_template, jsonify
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 import pyrebase
 import json
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # Set up database connection.
-config = {}
-with open('env.json') as data:
-    config = json.load(data)['database']
-
-firebase = pyrebase.initialize_app(config)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
 
 # Set up the user
 auth = firebase.auth()
 user = auth.sign_in_with_email_and_password('jmankhan1@gmail.com', 'password')
-
-db = firebase.database()
 
 class ProjectException(Exception):
     status_code = 400
