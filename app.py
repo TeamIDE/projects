@@ -13,14 +13,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Set up database connection.
-config = {
-    'apiKey': "AIzaSyDpFoAzfFzzcCmYkMwkAz61wUY_O5z9KM4", 
-    'authDomain': "cloudide-3d6ca.firebaseapp.com", 
-    'databaseURL': "https://cloudide-3d6ca.firebaseio.com", 
-    'projectId': "cloudide-3d6ca", 
-    'storageBucket': "cloudide-3d6ca.appspot.com", 
-    'messagingSenderId': "42881595105"
-}
+config = {}
+with open('env.json') as data:
+    config = json.load(data)['database']
 
 firebase = pyrebase.initialize_app(config)
 
